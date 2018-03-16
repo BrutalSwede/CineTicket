@@ -43,6 +43,8 @@ namespace CineTicket.Migrations
 
                     b.Property<string>("Info");
 
+                    b.Property<int>("RunningMinutes");
+
                     b.Property<string>("Title");
 
                     b.HasKey("ID");

@@ -19,9 +19,9 @@ namespace CineTicket.Data
 
             var movies = new Movie[]
             {
-                new Movie {Title="Lord of the Rings: Return of the King", Info="The 2018 remaster"},
-                new Movie {Title="Hannibal", Info="The classic horror film"},
-                new Movie {Title="Finding Nemo", Info="For all ages"}
+                new Movie {Title="Lord of the Rings: Return of the King", Info="Extended cut!", RunningMinutes=263},
+                new Movie {Title="Hannibal", Info="The classic horror film", RunningMinutes=131},
+                new Movie {Title="Finding Nemo", Info="For all ages", RunningMinutes=100}
             };
             foreach (Movie m in movies)
             {

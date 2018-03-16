@@ -11,8 +11,8 @@ using System;
 namespace CineTicket.Migrations
 {
     [DbContext(typeof(CinemaContext))]
-    [Migration("20180316123945_initial-migration")]
-    partial class initialmigration
+    [Migration("20180316135652_Add-RunningMinutes")]
+    partial class AddRunningMinutes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -43,6 +43,8 @@ namespace CineTicket.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Info");
+
+                    b.Property<int>("RunningMinutes");
 
                     b.Property<string>("Title");
 
