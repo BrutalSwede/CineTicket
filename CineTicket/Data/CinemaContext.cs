@@ -27,6 +27,7 @@ namespace CineTicket.Data
 
             modelBuilder.Entity<Booking>().HasOne(b => b.Showing).WithMany(s => s.Bookings).HasForeignKey(b => b.ShowingID);
             modelBuilder.Entity<Salon>().HasMany(s => s.Showings).WithOne(sh => sh.Salon).HasForeignKey(sh => sh.SalonID);
+            modelBuilder.Entity<Movie>().HasMany(m => m.Showings).WithOne(s => s.Movie).HasForeignKey(s => s.MovieID);
         }
     }
 }

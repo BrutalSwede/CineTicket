@@ -11,5 +11,7 @@ namespace CineTicket.Models
         public string Title { get; set; }
         public int RunningMinutes { get; set; }
         public string Info { get; set; }
+
+        public ICollection<Showing> Showings { get; set; }
     }
 }
