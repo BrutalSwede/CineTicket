@@ -1,8 +1,49 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<CineTicket.Models.Showing>
+
+@{
+    ViewData["Title"] = "CineTicket";
 }
 
 <div class="jumbotron">
     <h1>Welcome to CineTicket!</h1>
     <p>Your one stop shop for Cinema tickets!</p>
 </div>
+<h2>Currently showing:</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Movie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Salon)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var remainingSeats = item.Salon.MaxSeats - item.Bookings.Sum(b => b.NumberOfSeats);
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Movie.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salon.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => remainingSeats) seats left
+                </td>
+                <!--Buttons for booking seats-->
+            </tr>
+        }
+    </tbody>
+</table>

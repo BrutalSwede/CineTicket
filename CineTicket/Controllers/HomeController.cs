@@ -4,15 +4,27 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using CineTicket.Models;
+using CineTicket.Data;
 
 namespace CineTicket.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
+
+        private readonly CinemaContext _context;
+
+        public HomeController(CinemaContext context)
         {
-            return View();
+            _context = context;
+        }
+
+
+        public async Task<IActionResult> Index()
+        {
+            var showings = _context.Showings.Include(s => s.Movie).Include(s => s.Salon).Include(s => s.Bookings);
+            return View(await showings.ToListAsync());
         }
 
         public IActionResult About()
