@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CineTicket.Models.Showing>
+﻿@model IEnumerable<CineTicket.Models.ShowingViewModel>
 
 @{
     ViewData["Title"] = "CineTicket";
@@ -16,10 +16,10 @@
                 @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Movie)
+                @Html.DisplayNameFor(model => model.MovieTitle)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Salon)
+                @Html.DisplayNameFor(model => model.SalonName)
             </th>
             <th>
                 Seats
@@ -28,26 +28,24 @@
     </thead>
     <tbody>
         @foreach (var item in Model)
-        {
-            var remainingSeats = item.Salon.MaxSeats - item.Bookings.Sum(b => b.NumberOfSeats);
-            <!-- Wrap row with "Book" action -->
+    {
+        <!-- Wrap row with "Book" action -->
+        
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Movie.Title)
+                    @Html.DisplayFor(modelItem => item.MovieTitle)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Salon.Name)
+                    @Html.DisplayFor(modelItem => item.SalonName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => remainingSeats) seats left
+                    @Html.DisplayFor(modelItem => item.RemainingSeats) seats left
                 </td>
-                <td>
-                    <a asp-action="BookTicket" asp-route-id="@item.ID">Book</a>
-                </td>
+                <td><a asp-action="BookTicket" asp-route-id="@item.ID">Book</a></td>
             </tr>
-        }
+}
     </tbody>
 </table>

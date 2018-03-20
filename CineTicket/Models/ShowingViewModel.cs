@@ -11,6 +11,7 @@ namespace CineTicket.Models
 
         public int RemainingSeats { get; set; }
         public string MovieTitle { get; set; }
+        public int MovieRunningMinutes { get; set; }
         public string SalonName { get; set; }
         public DateTime Date { get; set; }
 

@@ -23,8 +23,23 @@ namespace CineTicket.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var showings = _context.Showings.Include(s => s.Movie).Include(s => s.Salon).Include(s => s.Bookings);
-            return View(await showings.ToListAsync());
+            var showings = await _context.Showings.Include(s => s.Movie).Include(s => s.Salon).Include(s => s.Bookings).ToListAsync();
+
+            List<ShowingViewModel> viewModels = new List<ShowingViewModel>();
+
+            foreach (var showing in showings)
+            {
+                viewModels.Add(new ShowingViewModel()
+                {
+                    ID = showing.ID,
+                    MovieTitle = showing.Movie.Title,
+                    SalonName = showing.Salon.Name,
+                    Date = showing.Date,
+                    RemainingSeats = showing.Salon.MaxSeats - showing.Bookings.Sum(b => b.NumberOfSeats)
+                });
+            }
+
+            return View(viewModels);
         }
 
         public async Task<IActionResult> BookTicket(int? id)
@@ -47,7 +62,8 @@ namespace CineTicket.Controllers
                 MovieTitle = showing.Movie.Title,
                 SalonName = showing.Salon.Name,
                 Date = showing.Date,
-                RemainingSeats = showing.Salon.MaxSeats - showing.Bookings.Sum(b => b.NumberOfSeats)
+                RemainingSeats = showing.Salon.MaxSeats - showing.Bookings.Sum(b => b.NumberOfSeats),
+                MovieRunningMinutes = showing.Movie.RunningMinutes
             };
 
             return View(showingVM);
@@ -56,7 +72,17 @@ namespace CineTicket.Controllers
         [HttpPost]
         public async Task<IActionResult> BookTicket([Bind("NumberOfSeats,ShowingID")] Booking booking)
         {
-            return null;
+
+            // Do checks here to see if the tickets are still available
+
+            if(ModelState.IsValid)
+            {
+                _context.Bookings.Add(booking);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index)); // CHANGE LATER: Redirect to booking confirmation window instead
+            }
+
+            return View(Error());
         }
 
         public IActionResult About()
