@@ -49,8 +49,8 @@ namespace CineTicket
         // GET: Showings/Create
         public IActionResult Create()
         {
-            ViewData["MovieID"] = new SelectList(_context.Movies, "ID", "ID");
-            ViewData["SalonID"] = new SelectList(_context.Salons, "ID", "ID");
+            ViewData["MovieID"] = new SelectList(_context.Movies, "ID", "Title");
+            ViewData["SalonID"] = new SelectList(_context.Salons, "ID", "Name");
             return View();
         }
 
@@ -67,8 +67,8 @@ namespace CineTicket
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["MovieID"] = new SelectList(_context.Movies, "ID", "ID", showing.MovieID);
-            ViewData["SalonID"] = new SelectList(_context.Salons, "ID", "ID", showing.SalonID);
+            ViewData["MovieID"] = new SelectList(_context.Movies, "ID", "Title", showing.MovieID);
+            ViewData["SalonID"] = new SelectList(_context.Salons, "ID", "Name", showing.SalonID);
             return View(showing);
         }
 
@@ -85,8 +85,8 @@ namespace CineTicket
             {
                 return NotFound();
             }
-            ViewData["MovieID"] = new SelectList(_context.Movies, "ID", "ID", showing.MovieID);
-            ViewData["SalonID"] = new SelectList(_context.Salons, "ID", "ID", showing.SalonID);
+            ViewData["MovieID"] = new SelectList(_context.Movies, "ID", "Title", showing.MovieID);
+            ViewData["SalonID"] = new SelectList(_context.Salons, "ID", "Name", showing.SalonID);
             return View(showing);
         }
 

@@ -27,6 +27,38 @@ namespace CineTicket.Controllers
             return View(await showings.ToListAsync());
         }
 
+        public async Task<IActionResult> BookTicket(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var showing = await _context.Showings.Include(s => s.Bookings).Include(s => s.Movie).Include(s => s.Salon).SingleOrDefaultAsync(s => s.ID == id);
+
+            if (showing == null)
+            {
+                return NotFound();
+            }
+
+            var showingVM = new ShowingViewModel
+            {
+                ID = showing.ID,
+                MovieTitle = showing.Movie.Title,
+                SalonName = showing.Salon.Name,
+                Date = showing.Date,
+                RemainingSeats = showing.Salon.MaxSeats - showing.Bookings.Sum(b => b.NumberOfSeats)
+            };
+
+            return View(showingVM);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BookTicket([Bind("NumberOfSeats,ShowingID")] Booking booking)
+        {
+            return null;
+        }
+
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

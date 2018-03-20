@@ -21,14 +21,16 @@
             <th>
                 @Html.DisplayNameFor(model => model.Salon)
             </th>
-            <th></th>
+            <th>
+                Seats
+            </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             var remainingSeats = item.Salon.MaxSeats - item.Bookings.Sum(b => b.NumberOfSeats);
-
+            <!-- Wrap row with "Book" action -->
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Date)
@@ -42,7 +44,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => remainingSeats) seats left
                 </td>
-                <!--Buttons for booking seats-->
+                <td>
+                    <a asp-action="BookTicket" asp-route-id="@item.ID">Book</a>
+                </td>
             </tr>
         }
     </tbody>
