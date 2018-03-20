@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "BookTicket";
-    var maxSeats = Model.RemainingSeats < 12 ? Model.RemainingSeats : 12;
 }
 
 <!--<h2>BookTicket</h2>-->
@@ -16,6 +15,6 @@
 {
     <input name="ShowingID" type="hidden" value="@Model.ID" />
     <label for="NumberOfSeats"># seats</label>
-    <input name="NumberOfSeats" type="number" value="1" min="1" max="@maxSeats" />
+    <input name="NumberOfSeats" type="number" value="1" min="1" max="@ViewBag.MaxRemainingSeats" />
     <input type="submit" class="btn btn-default" value="Book"/>
 }

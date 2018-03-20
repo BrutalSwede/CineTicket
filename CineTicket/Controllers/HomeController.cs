@@ -66,6 +66,8 @@ namespace CineTicket.Controllers
                 MovieRunningMinutes = showing.Movie.RunningMinutes
             };
 
+            ViewData["MaxRemainingSeats"] = showingVM.RemainingSeats < 12 ? showingVM.RemainingSeats : 12;
+
             return View(showingVM);
         }
 
