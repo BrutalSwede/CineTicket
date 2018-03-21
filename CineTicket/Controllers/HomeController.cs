@@ -76,9 +76,16 @@ namespace CineTicket.Controllers
         {
 
             // Do checks here to see if the tickets are still available
-
             if(ModelState.IsValid)
             {
+
+                var showing = await _context.Showings.Where(s => s.ID == booking.ShowingID).Include(s => s.Bookings).Include(s => s.Salon).SingleOrDefaultAsync();
+
+                int remainingSeats = showing.Salon.MaxSeats - showing.Bookings.Sum(b => b.NumberOfSeats);
+
+                if (booking.NumberOfSeats > remainingSeats)
+                    return RedirectToAction(nameof(Error)); // Make custom view for order errors?
+
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index)); // CHANGE LATER: Redirect to booking confirmation window instead
