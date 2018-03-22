@@ -91,18 +91,31 @@ namespace CineTicket.Controllers
                 {
                     ID = booking.ID,
                     MovieTitle = showing.Movie.Title,
-                    SalonName = showing.Salon.Name
+                    SalonName = showing.Salon.Name,
+                    NumberOfSeats = booking.NumberOfSeats,
+                    Date = booking.Showing.Date
                 };
 
-                return RedirectToAction(nameof(Booking), bookingVM);
+                return View("Booking", bookingVM);
             }
 
-            return View();
+            return RedirectToAction(nameof(Error));
         }
 
         public async Task<IActionResult> Booking(Booking booking)
         {
+
+            if(booking == null)
+            {
+                return NotFound();
+            }
+
             var bookingExtendedInfo = await _context.Bookings.Where(b => b.ID == booking.ID).Include(b => b.Showing).ThenInclude(s => s.Movie).SingleOrDefaultAsync();
+
+            if(bookingExtendedInfo == null)
+            {
+                return NotFound();
+            }
 
             return View(bookingExtendedInfo);
         }
