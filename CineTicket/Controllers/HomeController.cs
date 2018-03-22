@@ -23,7 +23,7 @@ namespace CineTicket.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var showings = await _context.Showings.Include(s => s.Movie).Include(s => s.Salon).Include(s => s.Bookings).ToListAsync();
+            var showings = await _context.Showings.Where(s => s.Date > DateTime.Now).Include(s => s.Movie).Include(s => s.Salon).Include(s => s.Bookings).ToListAsync();
 
             List<ShowingViewModel> viewModels = new List<ShowingViewModel>();
 
@@ -74,12 +74,10 @@ namespace CineTicket.Controllers
         [HttpPost]
         public async Task<IActionResult> BookTicket([Bind("NumberOfSeats,ShowingID")] Booking booking)
         {
-
-            // Do checks here to see if the tickets are still available
             if(ModelState.IsValid)
             {
 
-                var showing = await _context.Showings.Where(s => s.ID == booking.ShowingID).Include(s => s.Bookings).Include(s => s.Salon).SingleOrDefaultAsync();
+                var showing = await _context.Showings.Where(s => s.ID == booking.ShowingID).Include(s => s.Bookings).Include(s => s.Salon).Include(s => s.Movie).SingleOrDefaultAsync();
 
                 int remainingSeats = showing.Salon.MaxSeats - showing.Bookings.Sum(b => b.NumberOfSeats);
 
@@ -88,10 +86,25 @@ namespace CineTicket.Controllers
 
                 _context.Bookings.Add(booking);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index)); // CHANGE LATER: Redirect to booking confirmation window instead
+
+                var bookingVM = new BookingViewModel()
+                {
+                    ID = booking.ID,
+                    MovieTitle = showing.Movie.Title,
+                    SalonName = showing.Salon.Name
+                };
+
+                return RedirectToAction(nameof(Booking), bookingVM);
             }
 
-            return View(Error());
+            return View();
+        }
+
+        public async Task<IActionResult> Booking(Booking booking)
+        {
+            var bookingExtendedInfo = await _context.Bookings.Where(b => b.ID == booking.ID).Include(b => b.Showing).ThenInclude(s => s.Movie).SingleOrDefaultAsync();
+
+            return View(bookingExtendedInfo);
         }
 
         public IActionResult About()

@@ -1,0 +1,37 @@
+﻿@model CineTicket.Models.BookingViewModel
+
+@{
+    ViewData["Title"] = "Booking";
+}
+
+<h2>Thank you for your booking!</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.MovieTitle)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Salon
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SalonName)
+        </dd>
+        <dt>
+            Seats
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumberOfSeats)
+        </dd>
+        <dt>
+            Booking #
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+    </dl>
+</div>
+<p>Your tickets are reserved until <em>one hour</em> before the screening starts, so make sure you claim them before that time.</p>
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model.ID">Edit</a> |*@
+    <a asp-action="Index">Back to List</a>
+</div>

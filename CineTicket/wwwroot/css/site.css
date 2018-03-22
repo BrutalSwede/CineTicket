@@ -26,6 +26,22 @@
     margin: 15px;
 }
 
+.available {
+    border-left: 3px solid #0094ff !important;
+    background-color: lightblue;
+}
+
+.available a {
+    display: inline-block;
+    height: 80%;
+    padding: 5px;
+}
+
+.unavailable {
+    border-left: 3px solid #ff0000 !important;
+    background-color: lightpink;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */
@@ -33,3 +49,5 @@
         display: none;
     }
 }
+
+
