@@ -10,6 +10,7 @@ namespace CineTicket.Models
         public int ID { get; set; }
 
         public int RemainingSeats { get; set; }
+        public int MovieID { get; set; }
         public string MovieTitle { get; set; }
         public int MovieRunningMinutes { get; set; }
         public string SalonName { get; set; }

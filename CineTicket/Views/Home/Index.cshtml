@@ -46,6 +46,9 @@
                 @Html.DisplayFor(modelItem => item.RemainingSeats) seats left
             </td>
             <td>
+                <a asp-action="Movie" asp-route-id="@item.MovieID">Details</a>
+            </td>
+            <td>
                 @{
                     if (item.RemainingSeats > 0)
                     {

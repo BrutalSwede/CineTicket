@@ -36,6 +36,7 @@ namespace CineTicket.Controllers
                 viewModels.Add(new ShowingViewModel()
                 {
                     ID = showing.ID,
+                    MovieID = showing.MovieID,
                     MovieTitle = showing.Movie.Title,
                     SalonName = showing.Salon.Name,
                     Date = showing.Date,
@@ -143,6 +144,23 @@ namespace CineTicket.Controllers
             }
 
             return View(bookingExtendedInfo);
+        }
+
+        public async Task<IActionResult> Movie(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            Movie movie = await _context.Movies.Where(m => m.ID == id).SingleOrDefaultAsync();
+
+            if (movie == null)
+            {
+                return NotFound();
+            }
+
+            return View(movie);
         }
 
         public IActionResult About()
