@@ -21,8 +21,12 @@ namespace CineTicket.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string sortOrder)
         {
+            ViewBag.DateSort = String.IsNullOrEmpty(sortOrder) ? "date_desc" : "";
+            ViewBag.SeatSort = sortOrder == "seats_asc" ? "seats_desc" : "seats_asc";
+
+
             var showings = await _context.Showings.Where(s => s.Date > DateTime.Now).Include(s => s.Movie).Include(s => s.Salon).Include(s => s.Bookings).ToListAsync();
 
             List<ShowingViewModel> viewModels = new List<ShowingViewModel>();
@@ -37,6 +41,24 @@ namespace CineTicket.Controllers
                     Date = showing.Date,
                     RemainingSeats = showing.Salon.MaxSeats - showing.Bookings.Sum(b => b.NumberOfSeats)
                 });
+            }
+
+            
+
+            switch (sortOrder)
+            {
+                case "date_desc":
+                    viewModels = viewModels.OrderByDescending(s => s.Date).ToList();
+                    break;
+                case "seats_asc":
+                    viewModels = viewModels.OrderBy(s => s.RemainingSeats).ToList();
+                    break;
+                case "seats_desc":
+                    viewModels = viewModels.OrderByDescending(s => s.RemainingSeats).ToList();
+                    break;
+                default:
+                    viewModels = viewModels.OrderBy(s => s.Date).ToList();
+                    break;
             }
 
             return View(viewModels);
@@ -76,6 +98,9 @@ namespace CineTicket.Controllers
         {
             if(ModelState.IsValid)
             {
+
+                if (booking.NumberOfSeats < 0)
+                    return RedirectToAction(nameof(Error));
 
                 var showing = await _context.Showings.Where(s => s.ID == booking.ShowingID).Include(s => s.Bookings).Include(s => s.Salon).Include(s => s.Movie).SingleOrDefaultAsync();
 

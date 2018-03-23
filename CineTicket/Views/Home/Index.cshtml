@@ -13,7 +13,8 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
+                @*@Html.DisplayNameFor(model => model.Date)*@
+                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.MovieTitle)
@@ -22,7 +23,7 @@
                 @Html.DisplayNameFor(model => model.SalonName)
             </th>
             <th>
-                Seats
+                @Html.ActionLink("Seats", "Index", new { sortOrder = ViewBag.SeatSort })
             </th>
         </tr>
     </thead>
