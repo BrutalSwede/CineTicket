@@ -1,0 +1,35 @@
+﻿@model CineTicket.Models.Movie
+
+@{
+    ViewData["Title"] = "Movie";
+}
+
+<h2>Movie</h2>
+
+<div>
+    <h4>Movie</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RunningMinutes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RunningMinutes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Info)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Info)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

@@ -1,8 +1,67 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<CineTicket.Models.ShowingViewModel>
+
+@{
+    ViewData["Title"] = "CineTicket";
 }
 
 <div class="jumbotron">
     <h1>Welcome to CineTicket!</h1>
     <p>Your one stop shop for Cinema tickets!</p>
 </div>
+<h2>Currently showing:</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Date)*@
+                @Html.ActionLink("Date", "Index", new { sortOrder = ViewBag.DateSort })
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MovieTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SalonName)
+            </th>
+            <th>
+                @Html.ActionLink("Seats", "Index", new { sortOrder = ViewBag.SeatSort })
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <!-- Wrap row with "Book" action -->
+
+        <tr class="@(item.RemainingSeats > 0 ? "available" : "unavailable")">
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MovieTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SalonName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RemainingSeats) seats left
+            </td>
+            <td>
+                <a asp-action="Movie" asp-route-id="@item.MovieID">Details</a>
+            </td>
+            <td>
+                @{
+                    if (item.RemainingSeats > 0)
+                    {
+                        <a asp-action="BookTicket" asp-route-id="@item.ID">Book</a>
+                    }
+                    else
+                    {
+                        <span>Sold out</span>
+                    }
+                }
+            </td>
+            
+        </tr>
+}
+    </tbody>
+</table>
